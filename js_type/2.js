@@ -11,6 +11,7 @@ let a=1;
 let b=a;
 
 b=3;
+//引用式子
 
 let obj2=obj;
 obj2.name ="肖青林"
