@@ -1,0 +1,21 @@
+{
+    "users":[
+        {
+            "id":1,
+            "name": "昌亦琛",
+            "hmometown":"新余"
+        },
+        {
+            "id":2,
+            "name":"过余鑫",
+            "hmometown":"进贤"
+        },
+        {
+
+            "id":3,
+            "name":"彭威",
+            "hmometown":"宜春"
+        }
+    ]
+    
+}
