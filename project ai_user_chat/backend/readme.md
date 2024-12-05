@@ -7,4 +7,12 @@
    文件型数据
    http服务 http:localhost:3000/users
    json-server
+
+   - 提供数据接口
+    - npm i json-server
+     - http server 响应http 请求 localhost 127.0.0.1
+     - json 文件 json-server --port 3001  --watch user.json
+    - script
+     "dev":"json-server --port 3001  --watch user.json" 
+     - npm run dev
  - llm ai server

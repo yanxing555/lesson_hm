@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "谭弘权"
+    },
+    {
+      "id": "2",
+      "name": "熊凯闻"
+    },
+    {
+      "id": "3",
+      "name": "王睿"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "title": "123",
+      "content": "Post 1 content",
+      "userId": 1
+    },
+    {
+      "id": "2",
+      "title": "REACT + JSON-Server 全栈快跑",
+      "content": "react component ",
+      "userId": 2
+    }
+  ]
+}
