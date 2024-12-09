@@ -57,10 +57,12 @@
   // 防抖
   // 高阶函数
   function debounce(fn, delay) {
+    let id;
     return function() {
       //console.log('//////')
       //限流？
-      fn.id=setTimeout(()=>{
+      clearTimeout(id);
+      id=setTimeout(()=>{
         fn()
       },delay)
       

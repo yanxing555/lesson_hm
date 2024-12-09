@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    //为什么需要symbol 呢？ 放心的加进去，绝对不会重复
+    const wes = Symbol('wes');
+    // 同学 对象字面量
+    let name ="熊博凯"
+
+    const classMates ={
+        // 字符串 覆盖
+        "cy":1,
+        "cy":2,
+        [name]:"猛男",
+        //Symbol  可以代替字符串作为key
+        [Symbol('Mark')]:{grade:50,gender:'male'},
+        [Symbol('olivia')]:{grade:80,gender:'female'},
+        [Symbol('olivia')]:{grade:80,gender:'female'},
+    }
+    console.log(classMates[name],classMates.cy,classMates);
+    //二维 打印key for in 遍历对象的value
+    for(let[key,val] of Object.entries(classMates)){//key val 用了es6中的结构
+        console.log(key ,val);
+    }
+    // 打印value for of 遍历对象的value
+    for(const person in classMates){
+        console.log(person);
+    }
+    //当for 循环遍历完后并不一定找到symbol
+    const syms =Object.getOwnPropertySymbols(classMates);
+    console.log(syms)
+
+    
+    const data=syms.map(sym=>classMates[sym].grade);
+    console.log(data)
+    //属性描述符
+    //取出自己的属性Object.getOwnPropertyDescriptors
+    console.log(Object.getOwnPropertyDescriptor(classMates));
+    </script>
+</body>
+</html>
