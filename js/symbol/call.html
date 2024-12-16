@@ -15,7 +15,7 @@ var obj = {
   func2: function() {
     setTimeout(function() {
       this.func1()
-    }.bind(obj), 5000)//.call()立即执行
+    }.call(obj), 5000)//.call()立即执行
   }
 }
 obj.func2()
