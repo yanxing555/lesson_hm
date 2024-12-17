@@ -9,4 +9,5 @@ console.log(typeof NaN)
 console.log(parseInt("abc")) //解析一个字符串为一个数值会得到
 console.log(oarseInt("12abc"))
 console.log(NaN == NaN) //NaN不代表确切的值，
+// 不能通过==NaN  去判断，所以要isNaN
 console.log(isNaN(NaN),isNan(parseInt("abc")))

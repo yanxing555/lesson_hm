@@ -7,3 +7,7 @@ console.log(Number(false))//0
 console.log(Number(true))//1
 console.log(Number("-123"))
 console.log(Number("123"))
+//16 进制
+console.log(Number("0x11"))
+console.log(Number(""),Number(" "))
+console.log(Number("100a"))
