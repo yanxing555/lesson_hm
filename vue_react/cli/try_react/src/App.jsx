@@ -1,6 +1,6 @@
 import { useState } from 'react'
-
-import Repos from './components/repos'
+//es6 模块化的引入
+import Repos from './components/Repos/repos'
 
 function App() {
   

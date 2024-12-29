@@ -39,7 +39,7 @@ const genSaleReport = async (saleData, query) => {
     
     try {
         let response = await client.chat.completions.create({ // 使用 chat.completions.create
-            model: 'gpt-4o',
+            model: 'gpt-3.5-turbo',
             messages: [{ role: 'user', content: prompt }],
             max_tokens: 1000,
             temperature: 0
@@ -53,8 +53,7 @@ const genSaleReport = async (saleData, query) => {
 
 const main = async () => {
     try {
-        // const query = `根据上述销售数据,计算iPhone 13和iPhone 14的总销量各是多少?`;
-        const query = '根据上述销售数据，可否定制接下来的产品售价？';
+        const query = `根据上述销售数据,计算iPhone 13和iPhone 14的总销量各是多少?`;
         const report = await genSaleReport(saleData, query); // 修正 await 拼写错误
         console.log(report);
     } catch (error) {
