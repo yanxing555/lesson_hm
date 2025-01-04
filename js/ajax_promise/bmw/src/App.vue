@@ -1,6 +1,7 @@
 <script setup>
 import LifecycleComponent from './components/LifecycleComponent.vue';
 import { ref } from 'vue';
+// option 选项式API ->组合式 Composition API
 const count = ref(0);
 const showComponent = ref(true); // 
 const width = ref(100);
