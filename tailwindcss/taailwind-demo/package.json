@@ -1,5 +1,5 @@
 {
-  "name": "tourtrace",
+  "name": "taailwind-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "router": "^1.3.8",
     "vue": "^3.5.13"
   },
   "devDependencies": {
