@@ -8,3 +8,25 @@
   - TS 像写java一样写js 强大的类型约束
 - vue-router
   - RouteRecordRow 类型约束
+  - redirect 重定向 /home
+- src/shims-vue.d.ts
+- vant UI 组件库
+  - element-ui 不太一样 包小，更快
+    按需加载 .use(list)
+
+  - vite 工程化
+    预先加载UI组件库 更快
+    vant 
+    @vant/auto-import-resolver
+    vite 支持
+    Components({
+      resolves:[
+        vantResolver()
+      ]
+    })
+- 移动端 App
+  - vant 适合移动端 element-ui PC端
+  - 路由 根App ->router-view -> redirect ->Home
+  - 图标字体库 iconfont 由阿里提供
+    - 在线选择需要的图标
+  - 组件 + 状态专利(pinia)
