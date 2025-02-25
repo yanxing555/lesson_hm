@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-assets/ionicons/2.0.1/css/ionicons.min.css~tplv-t2oaga2asx-image.image">
+  <link rel="stylesheet" href="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-assets/asset/fw-icon/1.0.9/iconfont.css~tplv-t2oaga2asx-image.image">
+  
+</head>
+<body>
+  <div>
+
+  </div>
+  <script>
+  //性能 观察器
+  const observer = new PerformaceObserver((list) => {
+    // 获取所有的性能指标
+    const entries = list.getEntries();
+    for (const entry of entries) {
+      // body里第一个 标签的渲染
+      if (entry.time === 'first-paint') {
+        const whiteScreeTime = entry.startTime;
+        console.log(`白屏时间：${whiteScreeTime} ms`);
+      }
+    }
+  })
+  observer.observe({ type: 'paint', buffered: true });
+  </script>
+</body>
+</html>
