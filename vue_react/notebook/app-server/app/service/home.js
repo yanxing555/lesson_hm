@@ -12,4 +12,4 @@ class HomeService extends Service {
     }
 }
 
-export default HomeService;
+module.exports = HomeService;

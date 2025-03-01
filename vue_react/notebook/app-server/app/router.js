@@ -12,6 +12,6 @@ module.exports = app => {
   router.get('/user/:id', controller.home.user);
   router.post("/add",controller.home.add);
   router.post('/register',controller.user.register); //登录
-  router.post('/login',controoller.user.login); //注册
+  router.post('/login',controller.user.login); //注册
 };
 

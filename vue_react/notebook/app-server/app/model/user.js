@@ -7,7 +7,7 @@ module.exports = app => {
         id:{type:INTEGER,primaryKey:true,autoIncrement:true},
         username:STRING(100),
         ctime:STRING(100), // 创建时间
-        avastar:STRING(100), //头像
+        avatar:STRING(100), //头像
         signature:STRING(100), // 签名
         password:STRING(100) 
     })

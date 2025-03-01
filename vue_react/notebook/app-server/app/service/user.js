@@ -1,12 +1,12 @@
 'use strict'
 
-const UserService = require('egg').Service;
+const Service = require('egg').Service;
 
-class UserService extends UserService {
-  async getUserByName(usename) {
+class UserService extends Service {
+  async getUserByName(username) {
     const { ctx } = this;
     try {
-      const res = await context.model.User.findOne({ // 查找数据库
+      const result = await ctx.model.User.findOne({ // 查找数据库
         where: {
           username
         }
