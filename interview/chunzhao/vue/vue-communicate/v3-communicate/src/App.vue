@@ -1,21 +1,24 @@
 <template>
-  <div>
-    <ParentOne/>
-    <ParentTwo/>
-    <ExposeParent/>
-    <VModelParent/>
-    <ProvideParent/>
-  </div>
+    <div>
+        {{ count }}
+        {{ double }}
+    </div>
 </template>
 
 <script setup>
-import ParentOne from "./components/ParentOne.vue";
-import ParentTwo from "./components/ParentTwo.vue";
-import ExposeParent from "./components/ExposeParent.vue";
-import VModelParent from "./components/VModelParent.vue";
-import ProvideParent from "./components/ProvideParent.vue";
+import { ref, computed } from 'vue' //一定会先执行一次
+const count = ref(0)
+const double = ref(0)
+
+watchEffect(() => {
+    double.value = count.value * 2
+})
+
+setTimeout(() => {
+    count.value++ 
+},1000)
 </script>
 
-<style  scoped>
+<style scoped>
 
 </style>
