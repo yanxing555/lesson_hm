@@ -14,15 +14,12 @@ export const useCartStore = defineStore('cart', () => {
   const items = ref<CartItem[]>([])
   const productStore = useProductStore()
   // items.value.push(1)
-  const totalPrice = computed(() => {
-    // 累加和
+  const totalPrice = computed(() => 
     items.value.reduce((total, item) => {
-      // null
-      const product = productStore.products.find(p => p.id === item.productId)
-      // ES6 中的可选链操作符
-      return total + (product?.price || 0) * item.quantity
+      const product = productStore.products.find(p => p.id === item.productId);
+      return total + (product?.price || 0) * item.quantity;
     }, 0)
-  })
+  );
 
   const getQuantity = (productId: number) => {
     const item = items.value.find(item => item.productId === productId)

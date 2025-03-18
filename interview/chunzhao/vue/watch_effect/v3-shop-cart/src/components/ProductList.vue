@@ -34,7 +34,7 @@
   
   // 示例watch使用
   watch(
-    () => cartStore.items,
+    () => cartStore.items, // 对象 执行一下
     () => {
       console.log('购物车变化:', cartStore.items);
     },
