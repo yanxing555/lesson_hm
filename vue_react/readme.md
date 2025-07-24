@@ -44,3 +44,9 @@
    可以改变的 
    不需要document.querySelector("")
    {{data}}
+
+ ## 前端为什么搞ai?
+- 时代的需求
+- 开发的效率 vibe coding 提升了开发效率 trae cursor
+- LLM的发展,产品需要更多更好的智能体验
+  用户体验是前端的职责,智能前端工程师的新角色之中
