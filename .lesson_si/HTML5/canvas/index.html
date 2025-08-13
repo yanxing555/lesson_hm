@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #demo {
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+<!-- 添加Canvas尺寸属性 -->
+<canvas id="demo" width="640" height="360"></canvas>
+<script>
+    let canvas = document.getElementById('demo');
+    let ctx = canvas.getContext('2d');
+    const img = new Image();
+    // 设置跨域属性
+    img.crossOrigin = 'anonymous';
+    img.src = 'https://img2.baidu.com/it/u=3590113950,3364353300&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=360';
+    img.onload = function(){
+        // 修复变量名错误：context → ctx
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+    // 添加错误处理
+    img.onerror = function(){
+        console.error('图片加载失败');
+    };
+</script>
+</body>
+</html>
