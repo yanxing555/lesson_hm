@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>for...in 深度解析 - enumerable属性详解</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #ff6b6b;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 10px;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Consolas', monospace;
+            overflow-x: auto;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        .output {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            border-left: 4px solid #ff6b6b;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #ff6b6b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 for...in 循环深度解析</h1>
+        
+        <div class="highlight">
+            <strong>核心原理：</strong> for...in 循环只会遍历对象的<strong>可枚举属性</strong>（enumerable: true），
+            而 Object.defineProperty 默认创建的属性 enumerable 为 false！
+        </div>
+
+        <h2>📊 属性枚举性对比表</h2>
+        <table class="comparison-table">
+            <tr>
+                <th>创建方式</th>
+                <th>enumerable</th>
+                <th>for...in</th>
+                <th>Object.keys()</th>
+                <th>JSON.stringify</th>
+            </tr>
+            <tr>
+                <td>对象字面量</td>
+                <td>true</td>
+                <td>✅ 可见</td>
+                <td>✅ 可见</td>
+                <td>✅ 可见</td>
+            </tr>
+            <tr>
+                <td>直接赋值</td>
+                <td>true</td>
+                <td>✅ 可见</td>
+                <td>✅ 可见</td>
+                <td>✅ 可见</td>
+            </tr>
+            <tr>
+                <td>defineProperty(默认)</td>
+                <td>false</td>
+                <td>❌ 不可见</td>
+                <td>❌ 不可见</td>
+                <td>❌ 不可见</td>
+            </tr>
+            <tr>
+                <td>defineProperty(enumerable: true)</td>
+                <td>true</td>
+                <td>✅ 可见</td>
+                <td>✅ 可见</td>
+                <td>✅ 可见</td>
+            </tr>
+        </table>
+
+        <h2>🧪 实验场景演示</h2>
+
+        <!-- 场景1: 基础对比 -->
+        <div class="demo-section">
+            <h3>1️⃣ 基础属性 vs defineProperty 属性</h3>
+            <button onclick="testBasicVsDefineProperty()">运行对比</button>
+            <div class="output" id="basic-output"></div>
+        </div>
+
+        <!-- 场景2: enumerable 开关效果 -->
+        <div class="demo-section">
+            <h3>2️⃣ enumerable true vs false</h3>
+            <button onclick="testEnumerableSwitch()

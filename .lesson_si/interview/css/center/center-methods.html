@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS居中方法大全</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .method-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .demo-box {
+            width: 200px;
+            height: 150px;
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .demo-item {
+            width: 80px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        /* 方法1: Flexbox */
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 方法2: Grid */
+        .grid-center {
+            display: grid;
+            place-items: center;
+        }
+
+        /* 方法3: Absolute + Transform */
+        .absolute-transform {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* 方法4: Absolute + Calc */
+        .absolute-calc {
+            position: absolute;
+            top: calc(50% - 20px);
+            left: calc(50% - 40px);
+        }
+
+        /* 方法5: Margin Auto */
+        .margin-auto {
+            margin: 0 auto;
+            margin-top: calc(50% - 20px);
+        }
+
+        /* 方法6: Text Align */
+        .text-align {
+            text-align: center;
+            line-height: 150px;
+        }
+
+        .code-snippet {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+
+        .pros-cons {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .pros {
+            color: #28a745;
+        }
+
+        .cons {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSS居中方法大全</h1>
+        
+        <div class="method-grid">
+            <!-- Flexbox居中 -->
+            <div class="method-card">
+                <h3>1. Flexbox居中</h3>
+                <div class="demo-box flex-center">
+                    <div class="demo-item">Flex</div>
+                </div>
+                <div class="code-snippet">
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">✅ 现代浏览器支持好</div>
+                    <div class="pros">✅ 代码简洁</div>
+                    <div class="cons">❌ IE9不支持</div>
+                </div>
+            </div>
+
+            <!-- Grid居中 -->
+            <div class="method-card">
+                <h3>2. Grid居中</h3>
+                <div class="demo-box grid-center">
+                    <div class="demo-item">Grid</div>
+                </div>
+                <div class="code-snippet">
+                    display: grid;
+                    place-items: center;
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">✅ 一行代码解决</div>
+                    <div class="pros">✅ 现代浏览器支持</div>
+                    <div class="cons">❌ IE11部分支持</div>
+                </div>
+            </div>
+
+            <!-- Absolute + Transform -->
+            <div class="method-card">
+                <h3>3. Absolute + Transform</h3>
+                <div class="demo-box">
+                    <div class="demo-item absolute-transform">Transform</div>
+                </div>
+                <div class="code-snippet">
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">✅ 兼容性好</div>
+                    <div class="pros">✅ 不需要知道尺寸</div>
+                    <div class="cons">❌ 可能影响其他定位</div>
+                </div>
+            </div>
+
+            <!-- Absolute + Calc -->
+            <div class="method-card">
+                <h3>4. Absolute + Calc</h3>
+                <div class="demo-box">
+                    <div class="demo-item absolute-calc">Calc</div>
+                </div>
+                <div class="code-snippet">
+                    position: absolute;
+                    top: calc(50% - 20px);
+                    left: calc(50% - 40px);
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">✅ 精确控制</div>
+                    <div class="cons">❌ 需要知道元素尺寸</div>
+                    <div class="cons">❌ 计算复杂</div>
+                </div>
+            </div>
+
+            <!-- Margin Auto -->
+            <div class="method-card">
+                <h3>5. Margin Auto</h3>
+                <div class="demo-box">
+                    <div class="demo-item margin-auto">Margin</div>
+                </div>
+                <div class="code-snippet">
+                    margin: 0 auto;
+                    /* 垂直居中需要额外处理 */
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">✅ 简单易懂</div>
+                    <div class="cons">❌ 仅水平居中</div>
+                    <div class="cons">❌ 需要设置宽度</div>
+                </div>
+            </div>
+
+            <!-- Text Align -->
+            <div class="method-card">
+                <h3>6. Text Align</h3>
+                <div class="demo-box text-align">
+                    <span>Text</span>
+                </div>
+                <div class="code-snippet">
+                    text-align: center;
+                    line-height: 150px;
+                </div>
+                <div class="pros-cons">
+                    <div class="pros">✅ 文本居中简单</div>
+                    <div class="cons">❌ 仅适用于文本</div>
+                    <div class="cons">❌ 垂直居中有限制</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h2>🎯 最佳实践推荐</h2>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>现代项目</strong>：使用 Flexbox 或 Grid</li>
+                <li><strong>兼容性要求高</strong>：使用 Absolute + Transform</li>
+                <li><strong>简单文本居中</strong>：使用 text-align: center</li>
+                <li><strong>响应式布局</strong>：使用 Flexbox 的 justify-content 和 align-items</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

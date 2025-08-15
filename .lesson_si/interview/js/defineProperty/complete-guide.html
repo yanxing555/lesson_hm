@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object.defineProperty 完整使用指南</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Consolas', monospace;
+            overflow-x: auto;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        .output {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            border-left: 4px solid #667eea;
+        }
+        .property-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .property-table th, .property-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .property-table th {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Object.defineProperty 完整使用指南</h1>
+        
+        <h2>📋 基本语法</h2>
+        <div class="code-block">
+            <pre>Object.defineProperty(obj, prop, descriptor)</pre>
+        </div>
+
+        <h2>🔧 属性描述符详解</h2>
+        <table class="property-table">
+            <tr>
+                <th>属性</th>
+                <th>类型</th>
+                <th>默认值</th>
+                <th>说明</th>
+            </tr>
+            <tr>
+                <td>value</td>
+                <td>任意类型</td>
+                <td>undefined</td>
+                <td>属性值</td>
+            </tr>
+            <tr>
+                <td>writable</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>是否可修改属性值</td>
+            </tr>
+            <tr>
+                <td>enumerable</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>是否可枚举（for...in, Object.keys）</td>
+            </tr>
+            <tr>
+                <td>configurable</td>
+                <td>boolean</td>
+                <td>false</td>
+                <td>是否可删除或修改描述符</td>
+            </tr>
+            <tr>
+                <td>get</td>
+                <td>function</td>
+                <td>undefined</td>
+                <td>获取属性值时调用的函数</td>
+            </tr>
+            <tr>
+                <td>set</td>
+                <td>function</td>
+                <td>undefined</td>
+                <td>设置属性值时调用的函数</td>
+            </tr>
+        </table>
+
+        <h2>🚀 使用场景演示</h2>
+
+        <!-- 场景1: 只读属性 -->
+        <div class="demo-section">
+            <h3>1️⃣ 创建只读属性</h3>
+            <button onclick="createReadonly()">创建只读属性</button>
+            <button onclick="tryModifyReadonly()">尝试修改只读属性</button>
+            <div class="output" id="readonly-output"></div>
+        </div>
+
+        <!-- 场景2: 私有属性 -->
+        <div class="demo-section">
+            <h3>2️⃣ 实现私有属性</h3>
+            <button onclick="createPrivate()">创建私有属性</button>
+            <button onclick="accessPrivate()">访问私有属性</button>
+            <div class="output" id="private-output"></div>
+        </div>
+
+        <!-- 场景3: 计算属性 -->
+        <div class="demo-section">
+            <h3>3️⃣ 计算属性</h3>
+            <button onclick="createComputed()">创建计算属性</button>
+            <button onclick="updateComputed()">更新基础值</button>
+            <div class="output" id="computed-output"></div>
+        </div>
+
+        <!-- 场景4: 数据验证 -->
+        <div class="demo-section">
+            <h3>4️⃣ 数据验证</h3>
+            <button onclick="createValidated()">创建验证属性</button>
+            <button onclick="setValidValue()">设置合法值</button>
+            <button onclick="setInvalidValue()">设置非法值</button>
+            <div class="output" id="validated-output"></div>
+        </div>
+
+        <!-- 场景5: 缓存计算 -->
+        <div class="demo-section">
+            <h3>5️⃣ 带缓存的计算属性</h3>
+            <button onclick="createCached()">创建缓存属性</button>
+            <button onclick="accessCached()">多次访问</button>
+            <div class="output" id="cached-output"></div>
+        </div>
+
+        <!-- 场景6: 响应式系统 -->
+        <div class="demo-section">
+            <h3>6️⃣ 完整响应式系统</h3>
+            <p>数据：<span id="reactive-data">{ count: 0 }</span></p>
+            <button onclick="incrementReactive()">增加</button>
+            <button onclick="decrementReactive()">减少</button>
+            <button onclick="resetReactive()">重置</button>
+            <div class="output" id="reactive-output"></div>
+        </div>
+    </div>
+
+    <script>
+        // 工具函数
+        function log(id, message) {
+            document.getElementById(id).innerHTML += `<div>${message}</div>`;
+        }
+
+        function clear(id) {
+            document.getElementById(id).innerHTML = '';
+        }
+
+        // 1️⃣ 只读属性
+        function createReadonly() {
+            clear('readonly-output');
+            const obj = {};
+            Object.defineProperty(obj, 'PI', {
+                value: 3.14159,
+                writable: false,  // 只读
+                enumerable: true,
+                configurable: false
+            });
+            log('readonly-output', `创建只读属性 PI = ${obj.PI}`);
+            log('readonly-output', `Object.getOwnPropertyDescriptor(obj, 'PI'): ${JSON.stringify(Object.getOwnPropertyDescriptor(obj, 'PI'))}`);
+        }
+
+        function tryModifyReadonly() {
+            const obj = {};
+            Object.defineProperty(obj, 'PI', {
+                value: 3.14159,
+                writable: false,
+                enumerable: true,
+                configurable: false
+            });
+            
+            try {
+                obj.PI = 3.14; // 尝试修改
+                log('readonly-output', `修改后 PI = ${obj.PI}`);
+            } catch (e) {
+                log('readonly-output', `修改失败: ${e.message}`);
+            }
+        }
+
+        // 2️⃣ 私有属性
+        function createPrivate() {
+            clear('private-output');
+            function createUser(name, age) {
+                const user = {};
+                let _age = age; // 私有变量
+                
+                Object.defineProperty(user, 'name', {
+                    value: name,
+                    writable: true,
+                    enumerable: true
+                });
+                
+                Object.defineProperty(user, 'age', {
+                    get() {
+                        log('private-output', `访问年龄: ${_age}`);
+                        return _age;
+                    },
+                    set(newVal) {
+                        if (newVal < 0 || newVal > 150) {
+                            log('private-output', `无效年龄: ${newVal}`);
+                            return;
+                        }
+                        log('private-output', `设置年龄: ${_age} -> ${newVal}`);
+                        _age = newVal;
+                    },
+                    enumerable: true
+                });
+                
+                return user;
+            }
+            
+            const user = createUser('张三', 25);
+            window.currentUser = user;
+            log('private-output', `创建用户: ${JSON.stringify(user)}`);
+        }
+
+        function accessPrivate() {
+            if (!window.currentUser) {
+                log('private-output', '请先创建用户');
+                return;
+            }
+            
+            log('private-output', `当前年龄: ${window.currentUser.age}`);
+            window.currentUser.age = 30;
+            log('private-output', `更新后年龄: ${window.currentUser.age}`);
+        }
+
+        // 3️⃣ 计算属性
+        let computedObj = null;
+        function createComputed() {
+            clear('computed-output');
+            computedObj = {};
+            let _width = 10;
+            let _height = 5;
+            
+            Object.defineProperty(computedObj, 'width', {
+                get() { return _width; },
+                set(val) { _width = val; }
+            });
+            
+            Object.defineProperty(computedObj, 'height', {
+                get() { return _height; },
+                set(val) { _height = val; }
+            });
+            
+            Object.defineProperty(computedObj, 'area', {
+                get() {
+                    const area = _width * _height;
+                    log('computed-output', `计算面积: ${area} (${_width} × ${_height})`);
+                    return area;
+                },
+                enumerable: true
+            });
+            
+            log('computed-output', `初始面积: ${computedObj.area}`);
+        }
+
+        function updateComputed() {
+            if (!computedObj) {
+                log('computed-output', '请先创建计算属性');
+                return;
+            }
+            
+            computedObj.width = 15;
+            log('computed-output', `更新后面积: ${computedObj.area}`);
+        }
+
+        // 4️⃣ 数据验证
+        let validatedObj = null;
+        function createValidated() {
+            clear('validated-output');
+            validatedObj = {};
+            let _email = '';
+            
+            Object.defineProperty(validatedObj, 'email', {
+                get() { return _email; },
+                set(newVal) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(newVal)) {
+                        log('validated-output', `❌ 无效邮箱: ${newVal}`);
+                        return;
+                    }
+                    _email = newVal;
+                    log('validated-output', `✅ 邮箱设置成功: ${newVal}`);
+                },
+                enumerable: true
+            });
+        }
+
+        function setValidValue() {
+            if (!validatedObj) {
+                log('validated-output', '请先创建验证属性');
+                return;
+            }
+            validatedObj.email = 'user@example.com';
+        }
+
+        function setInvalidValue() {
+            if (!validatedObj) {
+                log('validated-output', '请先创建验证属性');
+                return;
+            }
+            validatedObj.email = 'invalid-email';
+        }
+
+        // 5️⃣ 带缓存的计算属性
+        let cachedObj = null;
+        let cacheValue = null;
+        let cacheDirty = true;
+        
+        function createCached() {
+            clear('cached-output');
+            cachedObj = {};
+            let _base = 5;
+            let _exponent = 3;
+            
+            Object.defineProperty(cachedObj, 'power', {
+                get() {
+                    if (cacheDirty) {
+                        cacheValue = Math.pow(_base, _exponent);
+                        log('cached-output', `💡 计算新值: ${_base}^${_exponent} = ${cacheValue}`);
+                        cacheDirty = false;
+                    } else {
+                        log('cached-output', `📦 使用缓存: ${cacheValue}`);
+                    }
+                    return cacheValue;
+                }
+            });
+            
+            Object.defineProperty(cachedObj, 'base', {
+                set(val) {
+                    _base = val;
+                    cacheDirty = true;
+                }
+            });
+        }
+
+        function accessCached() {
+            if (!cachedObj) {
+                log('cached-output', '请先创建缓存属性');
+                return;
+            }
+            
+            cachedObj.power; // 第一次计算
+            cachedObj.power; // 使用缓存
+            cachedObj.base = 10; // 使缓存失效
+            cachedObj.power; // 重新计算
+        }
+
+        // 6️⃣ 完整响应式系统
+        let reactiveData = null;
+        function createReactiveSystem() {
+            reactiveData = {};
+            let _count = 0;
+            const listeners = [];
+            
+            Object.defineProperty(reactiveData, 'count', {
+                get() {
+                    return _count;
+                },
+                set(newVal) {
+                    if (_count !== newVal) {
+                        _count = newVal;
+                        document.getElementById('reactive-data').textContent = JSON.stringify({ count: _count });
+                        log('reactive-output', `🔄 数据变更: ${_count}`);
+                        
+                        // 触发所有监听函数
+                        listeners.forEach(fn => fn(_count));
+                    }
+                },
+                enumerable: true
+            });
+            
+            // 添加监听方法
+            reactiveData.onChange = function(fn) {
+                listeners.push(fn);
+            };
+            
+            // 添加自动更新DOM的监听
+            reactiveData.onChange(value => {
+                document.getElementById('reactive-data').textContent = JSON.stringify({ count: value });
+            });
+            
+            log('reactive-output', '响应式系统已创建');
+        }
+
+        function incrementReactive() {
+            if (!reactiveData) {
+                createReactiveSystem();
+            }
+            reactiveData.count++;
+        }
+
+        function decrementReactive() {
+            if (!reactiveData) {
+                createReactiveSystem();
+            }
+            reactiveData.count--;
+        }
+
+        function resetReactive() {
+            if (!reactiveData) {
+                createReactiveSystem();
+            }
+            reactiveData.count = 0;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createReadonly();
+            createPrivate();
+            createComputed();
+            createValidated();
+            createCached();
+        });
+    </script>
+</body>
+</html>

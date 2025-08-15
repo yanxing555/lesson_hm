@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>defineProperty响应式原理演示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .output {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Object.defineProperty 响应式原理演示</h1>
+        
+        <div class="demo-section">
+            <h3>🎯 基础响应式</h3>
+            <p>当前值：<span id="value-display">1</span></p>
+            <button onclick="incrementBasic()">增加基础值</button>
+        </div>
+
+        <div class="demo-section">
+            <h3>🔄 计算属性</h3>
+            <p>数量：<span id="count-display">0</span></p>
+            <p>双倍：<span id="double-display">0</span></p>
+            <button onclick="incrementCount()">增加数量</button>
+        </div>
+
+        <div class="demo-section">
+            <h3>📊 数据验证</h3>
+            <p>年龄：<span id="age-display">18</span></p>
+            <button onclick="setValidAge()">设置合法年龄</button>
+            <button onclick="setInvalidAge()">设置非法年龄</button>
+        </div>
+
+        <div class="demo-section">
+            <h3>🎮 数组响应式</h3>
+            <p>列表：<span id="list-display">[]</span></p>
+            <button onclick="addItem()">添加项目</button>
+            <button onclick="removeItem()">删除项目</button>
+        </div>
+
+        <div class="output" id="log"></div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            log.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+        }
+
+        // 🎯 基础响应式演示
+        const basicData = {};
+        let _value = 1;
+
+        Object.defineProperty(basicData, 'value', {
+            get() {
+                addLog('📖 读取基础值: ' + _value);
+                return _value;
+            },
+            set(newVal) {
+                _value = newVal;
+                addLog('✏️ 设置基础值: ' + newVal);
+                document.getElementById('value-display').textContent = newVal;
+            }
+        });
+
+        function incrementBasic() {
+            basicData.value += 1;
+        }
+
+        // 🔄 计算属性演示
+        const computedData = {};
+        let _count = 0;
+
+        Object.defineProperty(computedData, 'count', {
+            get() {
+                return _count;
+            },
+            set(newVal) {
+                _count = newVal;
+                document.getElementById('count-display').textContent = newVal;
+                document.getElementById('double-display').textContent = newVal * 2;
+                addLog(`📊 数量更新: ${_count}, 双倍: ${_count * 2}`);
+            }
+        });
+
+        function incrementCount() {
+            computedData.count += 1;
+        }
+
+        // 📊 数据验证演示
+        const person = {};
+        let _age = 18;
+
+        Object.defineProperty(person, 'age', {
+            get() {
+                return _age;
+            },
+            set(newVal) {
+                if (newVal < 0 || newVal > 150) {
+                    addLog(`❌ 无效年龄: ${newVal}`);
+                    return;
+                }
+                _age = newVal;
+                document.getElementById('age-display').textContent = newVal;
+                addLog(`✅ 年龄更新: ${_age}`);
+            }
+        });
+
+        function setValidAge() {
+            person.age = 25;
+        }
+
+        function setInvalidAge() {
+            person.age = 200;
+        }
+
+        // 🎮 数组响应式演示
+        const reactiveList = [];
+        const _list = [];
+
+        Object.defineProperty(reactiveList, 'items', {
+            get() {
+                return _list.slice(); // 返回副本
+            },
+            set(newVal) {
+                _list.length = 0;
+                _list.push(...newVal);
+                document.getElementById('list-display').textContent = JSON.stringify(_list);
+                addLog(`📝 列表更新: ${_list.join(', ')}`);
+            }
+        });
+
+        Object.defineProperty(reactiveList, 'add', {
+            value: function(item) {
+                _list.push(item);
+                this.items = _list;
+            }
+        });
+
+        Object.defineProperty(reactiveList, 'remove', {
+            value: function() {
+                _list.pop();
+                this.items = _list;
+            }
+        });
+
+        function addItem() {
+            reactiveList.add('项目' + (_list.length + 1));
+        }
+
+        function removeItem() {
+            reactiveList.remove();
+        }
+
+        // 初始化显示
+        document.getElementById('value-display').textContent = basicData.value;
+        document.getElementById('count-display').textContent = computedData.count;
+        document.getElementById('double-display').textContent = computedData.count * 2;
+        document.getElementById('age-display').textContent = person.age;
+    </script>
+</body>
+</html>
