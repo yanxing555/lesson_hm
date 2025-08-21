@@ -7,6 +7,10 @@ import {
 } from 'react';
 
 import {
+  type Todo
+} from '@/app/types/todo'
+
+import {
   Button
 } from "@/components/ui/button";
 import {
@@ -21,17 +25,18 @@ import {
 
 export default function Home() {
   const [newTodo, setNewTodo] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const addTodo = async () => {
-    if(!newTodo.trim()) return;
+    if (!newTodo.trim()) return ;
 
-    await fetch('/api/todos',{
-      method:'POST',
+    await fetch('/api/todos', {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text: newTodo, completed: false }),
-        text:newTodo
+      body: JSON.stringify({
+        text: newTodo
+      })
     })
 
     setNewTodo("")
@@ -40,7 +45,7 @@ export default function Home() {
 
   const fetchTodos = async () => {
     const response = await fetch('/api/todos');
-    const data = await response.json();
+    const data: Todo[] = await response.json();
     setTodos(data);
   }
 
@@ -48,6 +53,27 @@ export default function Home() {
     fetchTodos();
   }, [])
 
+  const toggleTodo = async(id:number , completed:boolean)=>{
+    await fetch('/api/todos',{
+      method:'PUT',
+      headers:{
+        'Content-Type':'application/json' 
+      },
+      body:JSON.stringify({id,completed}) 
+    });
+    fetchTodos();
+  }
+
+  const deleteTodo = async (id: number) => {
+    await fetch('/api/todos', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id })
+    });
+    fetchTodos();
+  }
   return (
     // xm md   lg 
     <main className="container mx-auto p-4 max-w-md">
@@ -68,7 +94,7 @@ export default function Home() {
 
           <div className="space-y-2">
           {
-            todos.map(todo => (
+            todos.map((todo: Todo) => (
               <div
                 key={todo.id}
                 className="flex items-center justify-between p-2 border rounded"
@@ -77,6 +103,7 @@ export default function Home() {
                   <input 
                     type="checkbox" 
                     checked={todo.completed}
+                    onChange={(e)=>toggleTodo(todo.id,e.target.checked)}
                     className="w-4 h-4"
                   />
                   <span className={todo.completed?'line-through':''}>
@@ -86,6 +113,7 @@ export default function Home() {
                 <Button
                   variant="destructive"
                   size="sm"
+                  onClick={()=>deleteTodo(todo.id)}
                 >Delete</Button>
               </div>
             ))
