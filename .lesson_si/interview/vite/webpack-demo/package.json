@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack server"
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "clean": "rm -rf dist",
+    "dev": "webpack server",
+    "preview": "pnpm run build && npx serve dist"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +20,7 @@
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.4",
+    "serve": "^14.2.4",
     "style-loader": "^4.0.0",
     "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
