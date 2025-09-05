@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance API Example</title>
+    <style>
+        #myList{
+            margin:20px;
+            padding:0;
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    <ul id="myList">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const list = document.getElementById('myList');
+            const items = list.getElementsByTagName('li');
+            console.log(items);
+        })
+    </script>
+</body>
+</html>
